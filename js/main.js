@@ -423,8 +423,13 @@
     root.classList.toggle('lyrics-on', on);
   }
 
+  // Wake audio on a tap only when sound is on, so "open it quietly" never grabs the iOS audio session.
+  function wake() {
+    if (!sfx('isMuted')) sfx('unlock');
+  }
+
   function playSong() {
-    sfx('unlock');
+    wake();
     lyricLine = -1;
     sfx('playSong', { onNote, onEnd: () => showLyrics(false) });
   }
@@ -543,7 +548,7 @@
       introDone = true;
       // This click is the gesture that unlocks Web Audio on iOS. Do it first, synchronously.
       if (quiet) sfx('setMuted', true);
-      sfx('unlock');
+      else sfx('unlock');
       syncMuteBtn();
       if (!quiet) sfx('partyHorn');
       intro.classList.add('is-opening');
@@ -562,6 +567,8 @@
 
     giftBtn.addEventListener('click', () => openGift(false));
     if (quietBtn) quietBtn.addEventListener('click', () => openGift(true));
+    doc.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !introDone) openGift(true); });
+    try { intro.focus({ preventScroll: true }); } catch (e) { /* old browsers */ }
   }
 
   // While the delivery dialog is open, everything behind it is inert.
@@ -620,7 +627,7 @@
     if (b.classList.contains('popped')) return;
     cancelTap();
     if (e && e.cancelable) e.preventDefault();
-    sfx('unlock');
+    wake();
     b.classList.add('popped');
     const r = b.getBoundingClientRect();
     const color = getComputedStyle(b).getPropertyValue('--c2').trim() || '#ff2fb3';
@@ -711,7 +718,7 @@
     // Autoplay: only while the carousel is mostly on screen, never in hidden tabs or for reduced
     // motion. Once you touch it, it stays put until you scroll away and come back.
     let touched = false;
-    const hold = () => { touched = true; lockUntil = 0; };
+    const hold = () => { touched = true; lockUntil = 0; apSync(); };
     ['pointerdown', 'touchstart', 'wheel', 'keydown', 'focusin'].forEach((ev) => track.addEventListener(ev, hold, { passive: true }));
     const canAuto = () => !userPaused && !touched && !reduced && inView && !doc.hidden;
     setInterval(() => {
@@ -719,22 +726,28 @@
     }, 500);
     if (hasIO) {
       new IntersectionObserver((entries) => {
-        const v = entries.some((en) => en.isIntersecting);
+        const en = entries[entries.length - 1];
+        const v = en.intersectionRatio >= 0.55;
         if (v && !inView) lastMove = performance.now(); // give the first photo a full beat
-        if (!v) touched = false;
+        if (!en.isIntersecting) { touched = false; apSync(); }
         inView = v;
-      }, { threshold: 0.55 }).observe(track);
+      }, { threshold: [0, 0.55] }).observe(track);
     } else {
       inView = true;
     }
 
+    function apSync() {
+      const paused = userPaused || touched;
+      if (apBtn) apBtn.dataset.paused = paused ? 'true' : 'false';
+      if (apLabel) apLabel.textContent = paused ? 'Play slideshow' : 'Pause slideshow';
+    }
     const setPaused = (p) => {
       userPaused = p;
-      if (apBtn) apBtn.dataset.paused = p ? 'true' : 'false';
-      if (apLabel) apLabel.textContent = p ? 'Play slideshow' : 'Pause slideshow';
+      if (!p) { touched = false; lastMove = performance.now(); }
+      apSync();
     };
     setPaused(userPaused);
-    if (apBtn) apBtn.addEventListener('click', () => setPaused(!userPaused));
+    if (apBtn) apBtn.addEventListener('click', () => setPaused(!(userPaused || touched)));
 
     const prev = $('#prevBtn');
     const next = $('#nextBtn');
@@ -751,7 +764,7 @@
       const loveEl = $('.love', ph);
       const love = (x, y) => {
         hold();
-        sfx('unlock');
+        wake();
         const r = ph.getBoundingClientRect();
         const h = doc.createElement('span');
         h.className = 'big-heart';
@@ -897,14 +910,15 @@
       granted = false;
       if (wish) wish.hidden = true;
       if (status) status.textContent = 'Candles relit. Make another wish!';
-      candles.forEach((c, i) => setTimeout(() => {
-        c.classList.remove('out');
+      candles.forEach((c, i) => {
+        c.classList.remove('out', 'relit');
+        void c.offsetWidth; // restart the pop-in animation
+        c.style.setProperty('--rd', (reduced ? 0 : i * 140) + 'ms');
         c.classList.add('relit');
         label(c, i);
-        sfx('tick');
-        update();
-        if (i === total - 1) sfx('ding');
-      }, reduced ? 0 : i * 140));
+        setTimeout(() => sfx(i === total - 1 ? 'ding' : 'tick'), reduced ? 0 : i * 140);
+      });
+      update();
       try { candles[0].focus({ preventScroll: true }); } catch (e) { /* ok */ }
     });
   }
@@ -960,7 +974,7 @@
 
     function spin() {
       if (spinning) return;
-      sfx('unlock');
+      wake();
       spinning = true;
       spins++;
       measure();
@@ -975,7 +989,7 @@
       $$('.hit', reel).forEach((el) => el.classList.remove('hit'));
       if (slot) slot.classList.add('spinning');
       if (lever) { lever.classList.add('pulled'); setTimeout(() => lever.classList.remove('pulled'), 320); }
-      if (spinBtn) { spinBtn.disabled = true; spinBtn.textContent = 'Spinning…'; }
+      if (spinBtn) { spinBtn.setAttribute('aria-disabled', 'true'); spinBtn.textContent = 'Spinning…'; }
       if (result) { result.classList.remove('pop'); result.textContent = 'Consulting the scientists…'; }
 
       const dur = reduced ? 1 : 2700 + Math.random() * 500;
@@ -1000,7 +1014,7 @@
       place(pos);
       spinning = false;
       if (slot) slot.classList.remove('spinning');
-      if (spinBtn) { spinBtn.disabled = false; spinBtn.innerHTML = 'Spin again <span aria-hidden="true">🎰</span>'; }
+      if (spinBtn) { spinBtn.removeAttribute('aria-disabled'); spinBtn.innerHTML = 'Spin again <span aria-hidden="true">🎰</span>'; }
       if (cells[target]) cells[target].classList.add('hit');
       const res = RESULTS[r];
       if (result) {
@@ -1040,6 +1054,15 @@
     const fill = cool && $('.cool-fill', cool);
     const fmt = (v) => v.toLocaleString('en-US');
 
+    const srValue = (el, text) => {
+      const s = doc.createElement('span');
+      s.className = 'visually-hidden';
+      s.textContent = text;
+      el.parentNode.insertBefore(s, el);
+      el.setAttribute('aria-hidden', 'true');
+    };
+    nums.forEach((el) => srValue(el, el.dataset.final || fmt(Number(el.dataset.count) || 0)));
+    if (coolVal) srValue(coolVal, '137');
     if (!reduced) nums.forEach((el) => { el.textContent = '0'; });
     if (!reduced && coolVal) coolVal.textContent = '0';
 
@@ -1141,7 +1164,7 @@
     let partyStarts = [];
 
     btn.addEventListener('click', () => {
-      sfx('unlock');
+      wake();
       presses++;
       btn.classList.add('pressed');
       setTimeout(() => btn.classList.remove('pressed'), 160);

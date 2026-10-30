@@ -14,15 +14,15 @@
   <meta property="og:title" content="Happy Birthday, Kenny! 🎉">
   <meta property="og:description" content="You've got a delivery 🎁 Tap to open. Sound on 🔊 Laissez les bons temps rouler!">
   <meta property="og:url" content="https://garrettkent.github.io/Kenny-Birthday/">
-  <meta property="og:image" content="https://garrettkent.github.io/Kenny-Birthday/img/og.jpg">
+  <meta property="og:image" content="https://garrettkent.github.io/Kenny-Birthday/img/og.jpg?v=2">
   <meta property="og:image:type" content="image/jpeg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <meta property="og:image:alt" content="Neon Happy Birthday sign above a marquee that reads KENNY PATTERSON, with confetti and fireworks.">
+  <meta property="og:image:alt" content="Neon Happy Birthday sign and a KENNY PATTERSON marquee next to a polaroid of Kenny in his New Orleans shirt.">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Happy Birthday, Kenny! 🎉">
   <meta name="twitter:description" content="You've got a delivery 🎁 Tap to open. Sound on 🔊">
-  <meta name="twitter:image" content="https://garrettkent.github.io/Kenny-Birthday/img/og.jpg">
+  <meta name="twitter:image" content="https://garrettkent.github.io/Kenny-Birthday/img/og.jpg?v=2">
 
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="icon" href="favicon-32.png" sizes="32x32" type="image/png">
@@ -33,7 +33,7 @@
   <link rel="preload" href="fonts/fredoka-latin-var.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="css/styles.css">
 
-  <script>document.documentElement.className = 'js intro-open';</script>
+  <script>document.documentElement.className = 'js intro-open'; if ('scrollRestoration' in history) history.scrollRestoration = 'manual';</script>
   <script src="js/audio.js" defer></script>
   <script src="js/fx.js" defer></script>
   <script src="js/main.js" defer></script>
@@ -53,7 +53,7 @@
   </div>
 
   <!-- The delivery -->
-  <div class="intro" id="intro" role="dialog" aria-modal="true" aria-labelledby="introTitle" aria-describedby="introSub">
+  <div class="intro" id="intro" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="introTitle" aria-describedby="introSub">
     <div class="intro-glow" aria-hidden="true"></div>
     <div class="intro-inner">
       <p class="intro-title" id="introTitle">
@@ -79,6 +79,21 @@
     </div>
   </div>
 
+  <!-- Floating controls -->
+  <div class="fab" role="group" aria-label="Party controls">
+    <button class="fab-btn" id="songBtn" type="button" aria-pressed="false" aria-label="Happy Birthday song" title="Play or stop the song">
+      <svg class="i-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/></svg>
+      <span class="eq" aria-hidden="true"><i></i><i></i><i></i></span>
+    </button>
+    <button class="fab-btn" id="muteBtn" type="button" aria-pressed="false" aria-label="Mute sound" title="Mute or unmute">
+      <svg class="i-sound" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12"/></svg>
+      <svg class="i-muted" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M16.5 9.5l5 5M21.5 9.5l-5 5"/></svg>
+    </button>
+  </div>
+  <button class="fab-btn fab-share" id="shareBtn" type="button" aria-label="Share this page" title="Share">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15V3M7 8l5-5 5 5"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg>
+  </button>
+
   <div class="page">
     <main id="main">
       <!-- HERO -->
@@ -92,13 +107,13 @@
           <canvas class="disco-ball" id="discoBall" width="240" height="240"></canvas>
         </div>
 
-        <div class="hero-content">
+        <div class="hero-content dancer">
           <h1 class="hero-title" id="mainTitle" tabindex="-1">
             <span class="neon">
               <span class="neon-glow" aria-hidden="true">Happy Birthday</span>
               <span class="neon-core">Happy Birt<span class="neon-broken">h</span>day</span>
             </span>
-            <span class="marquee dancer">
+            <span class="marquee">
               <span class="marquee-board" id="marqueeBoard">
                 <span class="marquee-bulbs" id="marqueeBulbs" aria-hidden="true"></span>
                 <span class="marquee-text">KENNY</span>
@@ -124,8 +139,8 @@
         <h2 class="section-title" id="photosTitle">The Shirt Chronicles</h2>
         <p class="section-sub">A photographic investigation into you and your favorite shirt. Swipe through the evidence. Double-tap a photo to send some love.</p>
 
-        <div class="carousel" aria-roledescription="carousel" aria-label="Photos of Kenny">
-          <div class="carousel-track" id="track" tabindex="0" aria-label="Photo slides. Use the arrow keys to browse.">
+        <div class="carousel" role="region" aria-roledescription="carousel" aria-label="Photos of Kenny">
+          <div class="carousel-track" id="track" role="group" tabindex="0" aria-label="Photo slides. Use the arrow keys to browse.">
             <figure class="slide" role="group" aria-roledescription="slide" aria-label="Photo 1 of 4">
               <div class="polaroid tilt-1 dancer">
                 <span class="tape tape-l" aria-hidden="true"></span>
@@ -317,7 +332,7 @@
             <span class="cool-name"><span aria-hidden="true">😎</span> Coolness</span>
             <span class="cool-val"><span data-count="137" id="coolVal">137</span>%</span>
           </div>
-          <div class="cool-track" role="meter" aria-label="Coolness" aria-valuemin="0" aria-valuemax="100" aria-valuenow="137" aria-valuetext="137 percent, which is not supposed to be possible">
+          <div class="cool-track" role="img" aria-label="Coolness bar at 137 percent, which is not supposed to be possible">
             <div class="cool-fill"><span class="cool-spark" aria-hidden="true"></span></div>
           </div>
           <span class="crack" aria-hidden="true"></span>
@@ -388,20 +403,6 @@
   <!-- Karaoke chip while the song plays -->
   <div class="lyrics" id="lyrics" aria-hidden="true"><span class="lyrics-note">♪</span><span class="lyrics-text" id="lyricsText"></span><span class="lyrics-note">♪</span></div>
 
-  <!-- Floating controls -->
-  <div class="fab" role="group" aria-label="Party controls">
-    <button class="fab-btn" id="songBtn" type="button" aria-pressed="false" aria-label="Happy Birthday song" title="Play or stop the song">
-      <svg class="i-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/></svg>
-      <span class="eq" aria-hidden="true"><i></i><i></i><i></i></span>
-    </button>
-    <button class="fab-btn" id="muteBtn" type="button" aria-pressed="false" aria-label="Mute sound" title="Mute or unmute">
-      <svg class="i-sound" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12"/></svg>
-      <svg class="i-muted" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M16.5 9.5l5 5M21.5 9.5l-5 5"/></svg>
-    </button>
-  </div>
-  <button class="fab-btn fab-share" id="shareBtn" type="button" aria-label="Share this page" title="Share">
-    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15V3M7 8l5-5 5 5"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg>
-  </button>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 

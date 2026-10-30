@@ -1,0 +1,399 @@
+<!doctype html>
+<html lang="en" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Happy Birthday, Kenny! 🎉</title>
+  <meta name="description" content="Kenny, you've got a delivery 🎁 Confetti, cake, fireworks, and the legendary New Orleans shirt. Laissez les bons temps rouler!">
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#14092e">
+  <meta name="color-scheme" content="dark">
+
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Kenny's Birthday Bash">
+  <meta property="og:title" content="Happy Birthday, Kenny! 🎉">
+  <meta property="og:description" content="You've got a delivery 🎁 Tap to open. Sound on 🔊 Laissez les bons temps rouler!">
+  <meta property="og:url" content="https://garrettkent.github.io/Kenny-Birthday/">
+  <meta property="og:image" content="https://garrettkent.github.io/Kenny-Birthday/img/og.jpg">
+  <meta property="og:image:type" content="image/jpeg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Neon Happy Birthday sign above a marquee that reads KENNY PATTERSON, with confetti and fireworks.">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Happy Birthday, Kenny! 🎉">
+  <meta name="twitter:description" content="You've got a delivery 🎁 Tap to open. Sound on 🔊">
+  <meta name="twitter:image" content="https://garrettkent.github.io/Kenny-Birthday/img/og.jpg">
+
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+
+  <link rel="preload" href="fonts/bungee-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/pacifico-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/fredoka-latin-var.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="css/styles.css">
+
+  <script>document.documentElement.className = 'js intro-open';</script>
+  <script src="js/audio.js" defer></script>
+  <script src="js/fx.js" defer></script>
+  <script src="js/main.js" defer></script>
+</head>
+<body>
+  <!-- Night sky: fixed, behind everything -->
+  <div class="sky" aria-hidden="true">
+    <div class="stars stars-a"></div>
+    <div class="stars stars-b"></div>
+    <div class="bokeh" id="bokeh"></div>
+  </div>
+
+  <!-- The delivery -->
+  <div class="intro" id="intro" role="dialog" aria-modal="true" aria-labelledby="introTitle" aria-describedby="introSub">
+    <div class="intro-glow" aria-hidden="true"></div>
+    <div class="intro-inner">
+      <p class="intro-title" id="introTitle">
+        <span class="intro-name">Kenny!</span>
+        <span class="intro-line">You've got a delivery 🎁</span>
+      </p>
+      <p class="intro-sub" id="introSub"><span class="speaker" aria-hidden="true">🔊</span> (sound on 🔊)</p>
+
+      <button class="gift" id="giftBtn" type="button" aria-label="Open your birthday delivery (plays sound)">
+        <span class="gift-rays" aria-hidden="true"></span>
+        <span class="gift-shadow" aria-hidden="true"></span>
+        <span class="gift-wrap" aria-hidden="true">
+          <span class="gift-lid">
+            <span class="gift-bow"><i></i><i></i><b></b></span>
+          </span>
+          <span class="gift-box"></span>
+          <span class="gift-tag">For: Kenny</span>
+        </span>
+      </button>
+
+      <p class="intro-hint" aria-hidden="true"><span class="hint-finger">👆</span> Tap the box</p>
+      <button class="intro-quiet" id="quietBtn" type="button">or open it quietly 🤫</button>
+    </div>
+  </div>
+
+  <div class="page">
+    <main id="main">
+      <!-- HERO -->
+      <header class="hero" id="hero" data-section>
+        <div class="spotlight spotlight-l" aria-hidden="true"></div>
+        <div class="spotlight spotlight-r" aria-hidden="true"></div>
+        <div class="disco-spots" id="discoSpots" aria-hidden="true"></div>
+        <svg class="string-lights" id="stringLights" aria-hidden="true" focusable="false"></svg>
+        <div class="disco" aria-hidden="true">
+          <span class="disco-cord"></span>
+          <canvas class="disco-ball" id="discoBall" width="240" height="240"></canvas>
+        </div>
+
+        <div class="hero-content">
+          <h1 class="hero-title" id="mainTitle" tabindex="-1">
+            <span class="neon">
+              <span class="neon-glow" aria-hidden="true">Happy Birthday</span>
+              <span class="neon-core">Happy Birt<span class="neon-broken">h</span>day</span>
+            </span>
+            <span class="marquee dancer">
+              <span class="marquee-board" id="marqueeBoard">
+                <span class="marquee-bulbs" id="marqueeBulbs" aria-hidden="true"></span>
+                <span class="marquee-text">KENNY</span>
+              </span>
+            </span>
+            <span class="surname"><span>PATTERSON</span></span>
+          </h1>
+
+          <p class="tagline">
+            <span>The Myth.</span>
+            <span>The Legend.</span>
+            <span class="tagline-shirt">The New Orleans Shirt.</span>
+          </p>
+          <p class="banner"><span aria-hidden="true">⚜️</span> Laissez les bons temps rouler! <span aria-hidden="true">⚜️</span></p>
+        </div>
+
+        <a class="scroll-cue" href="#photos">Scroll down. There's cake. <span aria-hidden="true">↓</span></a>
+      </header>
+
+      <!-- PHOTOS -->
+      <section class="section photos" id="photos" data-section aria-labelledby="photosTitle">
+        <p class="kicker">Exhibits A through D</p>
+        <h2 class="section-title" id="photosTitle">The Shirt Chronicles</h2>
+        <p class="section-sub">A photographic investigation into you and your favorite shirt. Swipe through the evidence. Double-tap a photo to send some love.</p>
+
+        <div class="carousel" aria-roledescription="carousel" aria-label="Photos of Kenny">
+          <div class="carousel-track" id="track" tabindex="0" aria-label="Photo slides. Use the arrow keys to browse.">
+            <figure class="slide" role="group" aria-roledescription="slide" aria-label="Photo 1 of 4">
+              <div class="polaroid tilt-1 dancer">
+                <span class="tape tape-l" aria-hidden="true"></span>
+                <span class="tape tape-r" aria-hidden="true"></span>
+                <div class="photo">
+                  <picture>
+                    <source type="image/webp" srcset="img/photos/kenny-1-peak.webp">
+                    <img src="img/photos/kenny-1-peak.jpg" width="1080" height="1350" decoding="async" alt="Kenny grinning wide in his gray New Orleans, Louisiana T-shirt, with a hand resting on his shoulder.">
+                  </picture>
+                  <span class="exhibit" aria-hidden="true">Exhibit A</span>
+                  <span class="sighting" aria-hidden="true">👕 Shirt sighting #1</span>
+                  <span class="love" aria-hidden="true"></span>
+                </div>
+                <figcaption>Peak Kenny. Fully charged, shirt deployed.</figcaption>
+              </div>
+            </figure>
+            <figure class="slide" role="group" aria-roledescription="slide" aria-label="Photo 2 of 4">
+              <div class="polaroid tilt-2 dancer">
+                <span class="tape tape-l" aria-hidden="true"></span>
+                <span class="tape tape-r" aria-hidden="true"></span>
+                <div class="photo">
+                  <picture>
+                    <source type="image/webp" srcset="img/photos/kenny-2-stare.webp">
+                    <img src="img/photos/kenny-2-stare.jpg" width="1080" height="1350" decoding="async" loading="lazy" alt="Kenny at the dinner table holding a drink, giving the camera a flat, unimpressed stare, in the same gray New Orleans shirt.">
+                  </picture>
+                  <span class="exhibit" aria-hidden="true">Exhibit B</span>
+                  <span class="sighting" aria-hidden="true">👕 Shirt sighting #2</span>
+                  <span class="love" aria-hidden="true"></span>
+                </div>
+                <figcaption>The face you make when somebody touches the thermostat.</figcaption>
+              </div>
+            </figure>
+            <figure class="slide" role="group" aria-roledescription="slide" aria-label="Photo 3 of 4">
+              <div class="polaroid tilt-3 dancer">
+                <span class="tape tape-l" aria-hidden="true"></span>
+                <span class="tape tape-r" aria-hidden="true"></span>
+                <div class="photo">
+                  <picture>
+                    <source type="image/webp" srcset="img/photos/kenny-3-faded.webp">
+                    <img src="img/photos/kenny-3-faded.jpg" width="1080" height="1350" decoding="async" loading="lazy" alt="A faded, warm-toned photo of Kenny laughing next to a Christmas tree, wearing a gray T-shirt with the New Orleans logo just visible.">
+                  </picture>
+                  <span class="exhibit" aria-hidden="true">Exhibit C</span>
+                  <span class="sighting" aria-hidden="true">👕 Shirt sighting #3</span>
+                  <span class="love" aria-hidden="true"></span>
+                </div>
+                <figcaption>Rare footage of Kenny in a different shirt. (Kidding. Same shirt. Bad lighting.)</figcaption>
+              </div>
+            </figure>
+            <figure class="slide" role="group" aria-roledescription="slide" aria-label="Photo 4 of 4">
+              <div class="polaroid tilt-4 dancer">
+                <span class="tape tape-l" aria-hidden="true"></span>
+                <span class="tape tape-r" aria-hidden="true"></span>
+                <div class="photo">
+                  <picture>
+                    <source type="image/webp" srcset="img/photos/kenny-4-crew.webp">
+                    <img src="img/photos/kenny-4-crew.jpg" width="1080" height="1350" decoding="async" loading="lazy" alt="Kenny smiling in his gray shirt with two other people in front of a decorated Christmas tree.">
+                  </picture>
+                  <span class="exhibit" aria-hidden="true">Exhibit D</span>
+                  <span class="sighting" aria-hidden="true">👕 Shirt sighting #4</span>
+                  <span class="love" aria-hidden="true"></span>
+                </div>
+                <figcaption>The Christmas crew. Kenny brought the shirt. Obviously.</figcaption>
+              </div>
+            </figure>
+          </div>
+          <button class="car-btn car-prev" id="prevBtn" type="button" aria-label="Previous photo"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+          <button class="car-btn car-next" id="nextBtn" type="button" aria-label="Next photo"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
+        </div>
+
+        <div class="carousel-bar">
+          <div class="dots" id="dots">
+            <button class="dot" type="button" aria-label="Show photo 1" aria-current="true"></button>
+            <button class="dot" type="button" aria-label="Show photo 2"></button>
+            <button class="dot" type="button" aria-label="Show photo 3"></button>
+            <button class="dot" type="button" aria-label="Show photo 4"></button>
+          </div>
+          <button class="autoplay-toggle" id="autoplayBtn" type="button" data-paused="false">
+            <span class="ap-pause" aria-hidden="true">❚❚</span><span class="ap-play" aria-hidden="true">▶</span>
+            <span class="ap-label">Pause slideshow</span>
+          </button>
+        </div>
+        <p class="tally">Shirt sightings: <strong>4 of 4</strong>. The streak continues.</p>
+      </section>
+
+      <!-- CAKE -->
+      <section class="section cake-section" id="cake" data-section aria-labelledby="cakeTitle">
+        <p class="kicker">Step one of getting even more legendary</p>
+        <h2 class="section-title" id="cakeTitle">Make a Wish, Kenny</h2>
+        <p class="section-sub">Tap each candle to blow it out. Or turn on the mic and blow on your phone. Nobody's watching. (Everybody's watching.)</p>
+
+        <div class="cake-stage dancer">
+          <div class="cake-glow" aria-hidden="true"></div>
+          <div class="cake" role="group" aria-label="Birthday cake with five lit candles">
+            <div class="candles" id="candles">
+              <button class="candle" type="button" aria-label="Candle 1 of 5, lit. Tap to blow it out."><span class="flame-glow"></span><span class="flame"></span><span class="smoke"></span><span class="wick"></span><span class="stick"></span></button>
+              <button class="candle" type="button" aria-label="Candle 2 of 5, lit. Tap to blow it out."><span class="flame-glow"></span><span class="flame"></span><span class="smoke"></span><span class="wick"></span><span class="stick"></span></button>
+              <button class="candle" type="button" aria-label="Candle 3 of 5, lit. Tap to blow it out."><span class="flame-glow"></span><span class="flame"></span><span class="smoke"></span><span class="wick"></span><span class="stick"></span></button>
+              <button class="candle" type="button" aria-label="Candle 4 of 5, lit. Tap to blow it out."><span class="flame-glow"></span><span class="flame"></span><span class="smoke"></span><span class="wick"></span><span class="stick"></span></button>
+              <button class="candle" type="button" aria-label="Candle 5 of 5, lit. Tap to blow it out."><span class="flame-glow"></span><span class="flame"></span><span class="smoke"></span><span class="wick"></span><span class="stick"></span></button>
+            </div>
+            <div class="tier tier-top" aria-hidden="true"><span class="drips"></span><span class="sprinkles"></span></div>
+            <div class="tier tier-bottom" aria-hidden="true"><span class="drips"></span><span class="sugar"></span><span class="cake-fleur">⚜️</span></div>
+            <div class="plate" aria-hidden="true"></div>
+          </div>
+        </div>
+        <p class="cake-note">King cake colors, obviously. Candle count redacted by the Committee for your privacy.</p>
+
+        <div class="cake-controls">
+          <button class="btn btn-ghost" id="micBtn" type="button"><span aria-hidden="true">🎤</span> <span class="mic-label">Use the mic</span></button>
+          <div class="mic-meter" id="micMeter" hidden aria-hidden="true"><span></span></div>
+        </div>
+
+        <div class="wish" id="wish" hidden>
+          <p class="wish-title">Wish granted! <span aria-hidden="true">✨</span></p>
+          <p class="wish-text">The Committee has approved your wish. Please allow 4 to 6 business days for delivery.</p>
+          <button class="btn" id="relightBtn" type="button">Relight the candles <span aria-hidden="true">🔥</span></button>
+        </div>
+        <p class="visually-hidden" id="cakeStatus" aria-live="polite"></p>
+      </section>
+
+      <!-- SLOT MACHINE -->
+      <section class="section slot-section" id="age" data-section aria-labelledby="ageTitle">
+        <p class="kicker">Science has questions</p>
+        <h2 class="section-title" id="ageTitle">How old is Kenny?</h2>
+        <p class="section-sub">We asked our top scientists. They built you a slot machine.</p>
+
+        <div class="slot dancer">
+          <div class="slot-crown">
+            <span class="slot-name">Age-O-Matic 3000</span>
+          </div>
+          <div class="slot-body">
+            <div class="slot-lights slot-lights-l" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+            <div class="slot-window" aria-hidden="true">
+              <div class="slot-reel" id="reel"></div>
+              <span class="slot-shade"></span>
+              <span class="slot-payline"></span>
+            </div>
+            <div class="slot-lights slot-lights-r" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+          </div>
+          <p class="slot-result" id="slotResult" aria-live="polite">Pull the lever. Science awaits.</p>
+          <div class="slot-base">
+            <button class="btn btn-gold spin-btn" id="spinBtn" type="button">Spin <span aria-hidden="true">🎰</span></button>
+            <span class="slot-count" id="slotCount">Spins: 0. Scientists: confident.</span>
+          </div>
+          <button class="lever" id="lever" type="button" aria-label="Pull the lever to spin"><span class="lever-arm"><span class="lever-knob"></span></span><span class="lever-base"></span></button>
+        </div>
+      </section>
+
+      <!-- STATS -->
+      <section class="section stats" id="stats" data-section aria-labelledby="statsTitle">
+        <p class="kicker">Audited by absolutely no one</p>
+        <h2 class="section-title" id="statsTitle">Official Kenny Stats</h2>
+
+        <div class="stat-grid">
+          <div class="stat-card dancer">
+            <span class="stat-emoji" aria-hidden="true">👕</span>
+            <span class="stat-num"><span data-count="4">4</span> / 4</span>
+            <span class="stat-label">Photos on this page featuring The Shirt</span>
+          </div>
+          <div class="stat-card dancer">
+            <span class="stat-emoji" aria-hidden="true">🌡️</span>
+            <span class="stat-num"><span data-count="1247">1,247</span></span>
+            <span class="stat-label">Thermostat adjustments you've vetoed</span>
+          </div>
+          <div class="stat-card dancer">
+            <span class="stat-emoji" aria-hidden="true">🧺</span>
+            <span class="stat-num"><span data-count="3650">3,650</span></span>
+            <span class="stat-label">Times The Shirt has been washed (we hope)</span>
+          </div>
+          <div class="stat-card dancer">
+            <span class="stat-emoji" aria-hidden="true">🎉</span>
+            <span class="stat-num"><span data-count="10000">10,000</span>+</span>
+            <span class="stat-label">Good times rolled (conservative estimate)</span>
+          </div>
+          <div class="stat-card stat-wide dancer">
+            <span class="stat-emoji" aria-hidden="true">🤗</span>
+            <span class="stat-num"><span data-count="999" data-final="∞">∞</span></span>
+            <span class="stat-label">Hugs you're owed today. Collect them all.</span>
+          </div>
+        </div>
+
+        <div class="cool-card" id="coolCard">
+          <div class="cool-head">
+            <span class="cool-name"><span aria-hidden="true">😎</span> Coolness</span>
+            <span class="cool-val"><span data-count="137" id="coolVal">137</span>%</span>
+          </div>
+          <div class="cool-track" role="meter" aria-label="Coolness" aria-valuemin="0" aria-valuemax="100" aria-valuenow="137" aria-valuetext="137 percent, which is not supposed to be possible">
+            <div class="cool-fill"><span class="cool-spark" aria-hidden="true"></span></div>
+          </div>
+          <span class="crack" aria-hidden="true"></span>
+          <p class="cool-note"><span aria-hidden="true">⚠️</span> Coolness exceeds maximum safe levels. Card structurally compromised.</p>
+        </div>
+      </section>
+
+      <!-- PROCLAMATION -->
+      <section class="section proc-section" id="proclamation" data-section aria-labelledby="procTitle">
+        <article class="proclamation dancer" id="procCard">
+          <span class="proc-corner tl" aria-hidden="true">⚜</span><span class="proc-corner tr" aria-hidden="true">⚜</span>
+          <span class="proc-corner bl" aria-hidden="true">⚜</span><span class="proc-corner br" aria-hidden="true">⚜</span>
+          <p class="proc-kicker">Hear ye! Hear ye!</p>
+          <h2 class="proc-title" id="procTitle">Official Proclamation</h2>
+          <p class="proc-body">Let it be known throughout the land, from the French Quarter to the back porch, that on this most excellent birthday, <strong>you, Kenny Patterson</strong>, are hereby and forevermore declared:</p>
+          <ol class="proc-list">
+            <li><span class="proc-num" aria-hidden="true">I.</span> Supreme Ruler of the Thermostat</li>
+            <li><span class="proc-num" aria-hidden="true">II.</span> Keeper of the Sacred New Orleans Shirt</li>
+            <li><span class="proc-num" aria-hidden="true">III.</span> Exempt from all chores for 24 hours</li>
+          </ol>
+          <p class="proc-fine">Anyone caught touching the thermostat during this period will be dealt with accordingly. The Shirt may not be washed, folded, or questioned without your written consent.</p>
+          <div class="proc-sign">
+            <p class="signature" aria-hidden="true">The Committee</p>
+            <p class="signed-by">Signed, The Committee of People Who Love Kenny</p>
+          </div>
+          <div class="seal" id="seal" aria-hidden="true">
+            <span class="seal-ribbon seal-ribbon-l"></span>
+            <span class="seal-ribbon seal-ribbon-r"></span>
+            <span class="seal-disc">
+              <svg class="seal-ring" viewBox="0 0 120 120" focusable="false">
+                <defs><path id="sealPath" d="M60,60 m-42,0 a42,42 0 1,1 84,0 a42,42 0 1,1 -84,0"/></defs>
+                <text><textPath href="#sealPath" startOffset="0">OFFICIAL ★ KENNY ★ APPROVED ★ 100% ★</textPath></text>
+              </svg>
+              <span class="seal-fleur">⚜</span>
+            </span>
+          </div>
+        </article>
+      </section>
+
+      <!-- DO NOT PRESS -->
+      <section class="section danger" id="danger" data-section aria-labelledby="dangerTitle">
+        <div class="danger-panel dancer">
+          <h2 class="danger-title" id="dangerTitle"><span aria-hidden="true">⚠️</span> Danger Zone <span aria-hidden="true">⚠️</span></h2>
+          <p class="danger-copy">Whatever you do, Kenny, do <em>not</em> press this button.</p>
+          <div class="danger-housing">
+            <button class="big-red" id="bigRed" type="button"><span class="big-red-label">Do not<br>press</span></button>
+          </div>
+          <p class="danger-msg" id="dangerMsg" aria-live="polite"></p>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer" data-section>
+      <p class="footer-big">Laissez les bons temps rouler!</p>
+      <p class="footer-love">Happy birthday, Kenny. You're loved more than that shirt, and that's really saying something. <span aria-hidden="true">💜💚💛</span></p>
+      <button class="btn" id="shareBtn2" type="button">Share the love <span aria-hidden="true">💜</span></button>
+      <p class="footer-small">Lovingly assembled by The Committee of People Who Love Kenny. No shirts were washed in the making of this page.</p>
+    </footer>
+  </div>
+
+  <!-- Party lights overlay (party mode) -->
+  <div class="party-lights" aria-hidden="true"><span class="beam beam-a"></span><span class="beam beam-b"></span></div>
+
+  <!-- Floating balloons -->
+  <div class="balloons" id="balloons" aria-hidden="true"></div>
+
+  <!-- Karaoke chip while the song plays -->
+  <div class="lyrics" id="lyrics" aria-hidden="true"><span class="lyrics-note">♪</span><span class="lyrics-text" id="lyricsText"></span><span class="lyrics-note">♪</span></div>
+
+  <!-- Floating controls -->
+  <div class="fab" role="group" aria-label="Party controls">
+    <button class="fab-btn" id="songBtn" type="button" aria-pressed="false" aria-label="Happy Birthday song" title="Play or stop the song">
+      <svg class="i-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/></svg>
+      <span class="eq" aria-hidden="true"><i></i><i></i><i></i></span>
+    </button>
+    <button class="fab-btn" id="muteBtn" type="button" aria-pressed="false" aria-label="Mute sound" title="Mute or unmute">
+      <svg class="i-sound" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12"/></svg>
+      <svg class="i-muted" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M16.5 9.5l5 5M21.5 9.5l-5 5"/></svg>
+    </button>
+  </div>
+  <button class="fab-btn fab-share" id="shareBtn" type="button" aria-label="Share this page" title="Share">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15V3M7 8l5-5 5 5"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg>
+  </button>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <!-- One canvas for every confetti/firework effect -->
+  <canvas id="fx" aria-hidden="true"></canvas>
+</body>
+</html>

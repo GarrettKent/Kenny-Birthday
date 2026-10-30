@@ -681,12 +681,22 @@
       current = i;
       dots.forEach((d, k) => { if (k === i) d.setAttribute('aria-current', 'true'); else d.removeAttribute('aria-current'); });
     };
+    let lastMove = performance.now();
+    let lockUntil = 0; // while our own smooth scroll is in flight, don't let it fight the dots
+    const syncFromScroll = () => {
+      const step = n > 1 ? slides[1].offsetLeft - slides[0].offsetLeft : track.clientWidth;
+      const i = clamp(Math.round(track.scrollLeft / (step || 1)), 0, n - 1);
+      if (i !== current) setActive(i);
+    };
     const goTo = (i, smooth) => {
       i = (i + n) % n;
       const s = slides[i];
       const left = s.offsetLeft - (track.clientWidth - s.offsetWidth) / 2;
+      lockUntil = performance.now() + 900;
       track.scrollTo({ left, behavior: smooth === false || reduced ? 'auto' : 'smooth' });
       setActive(i);
+      lastMove = performance.now();
+      setTimeout(syncFromScroll, 950);
     };
 
     let ticking = false;
@@ -695,18 +705,27 @@
       ticking = true;
       requestAnimationFrame(() => {
         ticking = false;
-        const step = n > 1 ? slides[1].offsetLeft - slides[0].offsetLeft : track.clientWidth;
-        const i = clamp(Math.round(track.scrollLeft / (step || 1)), 0, n - 1);
-        if (i !== current) setActive(i);
+        if (performance.now() >= lockUntil) syncFromScroll();
       });
     }, { passive: true });
 
-    // Autoplay pauses on touch / wheel / focus, offscreen, in hidden tabs, and for reduced motion.
-    const hold = () => { holdUntil = performance.now() + 7000; };
+    // Autoplay: only while the carousel is mostly on screen, never in hidden tabs or for reduced
+    // motion, and it backs off for 7s after any touch, wheel, key or focus.
+    const hold = () => { holdUntil = performance.now() + 7000; lockUntil = 0; };
     ['pointerdown', 'touchstart', 'wheel', 'keydown', 'focusin'].forEach((ev) => track.addEventListener(ev, hold, { passive: true }));
     const canAuto = () => !userPaused && !reduced && inView && !doc.hidden && performance.now() > holdUntil;
-    setInterval(() => { if (canAuto()) goTo(current + 1); }, 4200);
-    onSectionVisibility($('#photos'), (v) => { inView = v; if (v) hold(); });
+    setInterval(() => {
+      if (canAuto() && performance.now() - lastMove >= 4200) goTo(current + 1);
+    }, 500);
+    if (hasIO) {
+      new IntersectionObserver((entries) => {
+        const v = entries.some((en) => en.isIntersecting);
+        if (v && !inView) lastMove = performance.now(); // give the first photo a full beat
+        inView = v;
+      }, { threshold: 0.55 }).observe(track);
+    } else {
+      inView = true;
+    }
 
     const setPaused = (p) => {
       userPaused = p;

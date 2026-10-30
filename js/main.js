@@ -674,7 +674,6 @@
     const apLabel = apBtn && $('.ap-label', apBtn);
     let current = 0;
     let userPaused = reduced;
-    let holdUntil = 0;
     let inView = false;
 
     const setActive = (i) => {
@@ -710,10 +709,11 @@
     }, { passive: true });
 
     // Autoplay: only while the carousel is mostly on screen, never in hidden tabs or for reduced
-    // motion, and it backs off for 7s after any touch, wheel, key or focus.
-    const hold = () => { holdUntil = performance.now() + 7000; lockUntil = 0; };
+    // motion. Once you touch it, it stays put until you scroll away and come back.
+    let touched = false;
+    const hold = () => { touched = true; lockUntil = 0; };
     ['pointerdown', 'touchstart', 'wheel', 'keydown', 'focusin'].forEach((ev) => track.addEventListener(ev, hold, { passive: true }));
-    const canAuto = () => !userPaused && !reduced && inView && !doc.hidden && performance.now() > holdUntil;
+    const canAuto = () => !userPaused && !touched && !reduced && inView && !doc.hidden;
     setInterval(() => {
       if (canAuto() && performance.now() - lastMove >= 4200) goTo(current + 1);
     }, 500);
@@ -721,6 +721,7 @@
       new IntersectionObserver((entries) => {
         const v = entries.some((en) => en.isIntersecting);
         if (v && !inView) lastMove = performance.now(); // give the first photo a full beat
+        if (!v) touched = false;
         inView = v;
       }, { threshold: 0.55 }).observe(track);
     } else {

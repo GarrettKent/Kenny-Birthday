@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4a1a8f"/><stop offset="1" stop-color="#120830"/></linearGradient>
+    <radialGradient id="fl" cx=".5" cy=".72" r=".62"><stop offset="0" stop-color="#fff"/><stop offset=".35" stop-color="#fff3a0"/><stop offset=".75" stop-color="#ffb52e"/><stop offset="1" stop-color="#ff5a00"/></radialGradient>
+    <radialGradient id="gl" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#ffc45a" stop-opacity=".55"/><stop offset="1" stop-color="#ffc45a" stop-opacity="0"/></radialGradient>
+    <clipPath id="cd"><rect x="29.5" y="15" width="5" height="12" rx="1"/></clipPath>
+  </defs>
+  <rect width="64" height="64" rx="14" fill="url(#bg)"/>
+  <circle cx="32" cy="11" r="11" fill="url(#gl)"/>
+  <path d="M32 3.5C35.6 7.6 36.2 11 32 15.2 27.8 11 28.4 7.6 32 3.5Z" fill="url(#fl)"/>
+  <rect x="29.5" y="15" width="5" height="12" rx="1" fill="#fff"/>
+  <g clip-path="url(#cd)" stroke="#ff2fb3" stroke-width="1.6"><path d="M28 19l8-3M28 23l8-3M28 27l8-3"/></g>
+  <rect x="17" y="26" width="30" height="13" rx="3" fill="#ff5fbf"/>
+  <rect x="17" y="26" width="30" height="3.2" rx="1.5" fill="#fff6fb"/>
+  <g fill="#fff6fb"><circle cx="20.5" cy="29.3" r="2"/><circle cx="26.5" cy="29.6" r="2.2"/><circle cx="32.5" cy="29.3" r="2"/><circle cx="38.5" cy="29.6" r="2.2"/><circle cx="44" cy="29.3" r="1.9"/></g>
+  <g fill="#ffd23f"><circle cx="22" cy="34.5" r=".9"/><circle cx="30" cy="35" r=".9"/><circle cx="38" cy="34.4" r=".9"/></g>
+  <g fill="#22e5ff"><circle cx="26" cy="35.2" r=".9"/><circle cx="34" cy="34.6" r=".9"/><circle cx="42" cy="35" r=".9"/></g>
+  <path d="M13 39h11.7v16H13a3 3 0 0 1-3-3V42a3 3 0 0 1 3-3z" fill="#7b2fd6"/>
+  <rect x="24.7" y="39" width="14.6" height="16" fill="#0fa35a"/>
+  <path d="M39.3 39H51a3 3 0 0 1 3 3v10a3 3 0 0 1-3 3H39.3z" fill="#e8a800"/>
+  <rect x="10" y="39" width="44" height="3.4" rx="1.6" fill="#fffaf0"/>
+  <g fill="#fffaf0"><circle cx="14" cy="42.4" r="2.2"/><circle cx="21" cy="42.8" r="2.4"/><circle cx="28" cy="42.4" r="2.1"/><circle cx="35" cy="42.8" r="2.4"/><circle cx="42" cy="42.4" r="2.2"/><circle cx="49.5" cy="42.8" r="2.3"/></g>
+  <rect x="6" y="54.2" width="52" height="4.2" rx="2.1" fill="#d8d2ee"/>
+</svg>

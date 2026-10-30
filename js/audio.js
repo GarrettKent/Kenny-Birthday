@@ -13,7 +13,7 @@
 
   var AC = window.AudioContext || window.webkitAudioContext;
   var OAC = window.OfflineAudioContext || window.webkitOfflineAudioContext;
-  var MASTER = 0.8;            // master gain when not muted
+  var MASTER = 1;              // master gain when not muted
   var LEAD = 0.012;            // scheduling headroom for one-shots (s)
 
   var ctx = null;              // the live AudioContext, created lazily by unlock()
@@ -108,9 +108,9 @@
   // -------------------------------------------------------------------- graph
   function buildGraph(c, level) {
     var g = { master: c.createGain(), music: c.createGain(), sfx: c.createGain(), verb: c.createGain() };
-    var comp = c.createDynamicsCompressor(), conv = c.createConvolver();
-    comp.threshold.value = -9;      // gentle limiter: leaves single sounds alone,
-    comp.knee.value = 6;            // holds stacks of booms a few dB under full scale
+    var comp = c.createDynamicsCompressor(), conv = c.createConvolver(), trim = c.createGain();
+    comp.threshold.value = -9;      // gentle limiter: leaves single sounds alone and
+    comp.knee.value = 6;            // holds stacks of booms just under full scale...
     comp.ratio.value = 12;
     comp.attack.value = 0.002;
     comp.release.value = 0.2;
@@ -119,7 +119,8 @@
     g.music.connect(g.master);
     g.sfx.connect(g.master);
     wire([g.verb, conv, g.master]);
-    wire([g.master, comp, c.destination]);
+    trim.gain.value = 0.78;         // ...then this offsets its built-in make-up gain: peaks ~-3 dBFS
+    wire([g.master, comp, trim, c.destination]);
     return g;
   }
 
@@ -252,8 +253,8 @@
   }
   // "ta-DA!": a short stab, then a longer, brighter, wider chord with a splash of shimmer.
   function tada(c, out, when, o) {
-    brass(c, voice(c, out, 0.05, vo(o, 0, 0.12)), when, [55, 60, 64, 67], 0.11, 2200, false);
-    var t = when + 0.17, v = voice(c, out, 0.045, vo(o, 0, 0.2));
+    brass(c, voice(c, out, 0.09, vo(o, 0, 0.12)), when, [55, 60, 64, 67], 0.11, 2200, false);
+    var t = when + 0.17, v = voice(c, out, 0.08, vo(o, 0, 0.2));
     brass(c, v, t, [48, 60, 64, 67, 72, 76], 0.95, 5200, true);
     var s = noise(v), hp = filter(c, 'highpass', 6500, 0.7), g = c.createGain();
     pluck(g.gain, t, 1.6, 0.004, 0.9);
@@ -264,7 +265,7 @@
   // Party blower: a buzzy reed (saw + square) through a nasal formant, fluttering at ~24 Hz
   // as the paper tube unrolls, swelling and bending up at the end: brrrrRRRT!
   function partyHorn(c, out, when, o) {
-    var v = voice(c, out, 0.16, vo(o, 0, 0.06)), f0 = rand(320, 360), end = when + 0.95;
+    var v = voice(c, out, 0.115, vo(o, 0, 0.06)), f0 = rand(320, 360), end = when + 0.95;
     var hp = v.own(filter(c, 'highpass', 250, 0.7)), pk = v.own(filter(c, 'peaking', 1300, 2));
     var lp = v.own(filter(c, 'lowpass', 3800, 0.8)), flut = v.own(c.createGain()), env = v.own(c.createGain());
     var lfo = c.createOscillator(), lfoAmp = v.own(c.createGain()), lfoPitch = v.own(c.createGain());
@@ -320,7 +321,7 @@
 
   // Rocket launch: a whoosh (noise through a rising bandpass) with a thin whistle on top.
   function launch(c, out, when, o) {
-    var v = voice(c, out, 0.6, vo(o, o.pan, 0.1)), dur = rand(0.8, 1), end = when + dur;
+    var v = voice(c, out, 0.95, vo(o, o.pan, 0.1)), dur = rand(0.8, 1), end = when + dur;
     var s = noise(v), bp = filter(c, 'bandpass', 500, 2.2), g = c.createGain();
     bp.frequency.setValueAtTime(500, when);
     bp.frequency.exponentialRampToValueAtTime(3200, end);
@@ -341,7 +342,7 @@
 
   // Slot-reel tick: 3 ms of noise through a resonant bandpass, like a pawl clicking a tooth.
   function tick(c, out, when) {
-    var v = voice(c, out, 0.6), s = noise(v), bp = filter(c, 'bandpass', rand(2600, 3400), 3), g = c.createGain();
+    var v = voice(c, out, 1.2), s = noise(v), bp = filter(c, 'bandpass', rand(2600, 3400), 3), g = c.createGain();
     pluck(g.gain, when, 1, 0.0003, 0.02);
     wire([s, bp, g, v.input]);
     v.play(s, when, when + 0.03, [bp, g], rand(0, 0.9));
@@ -350,7 +351,7 @@
   // Slot chime: bright music-box bells. A rising "ding-ding", or for a jackpot an arpeggio
   // up two octaves, a held chord and a sparkle.
   function ding(c, out, when, o) {
-    var w = { verb: o.verb, wet: 0.35, t60: 1.6 }, i;
+    var w = { verb: o.verb, wet: 0.5, t60: 1.6 }, i;
     if (!o.big) {
       tine(c, out, when, mtof(88), 1, w);
       tine(c, out, when + 0.09, mtof(96), 0.9, w);
@@ -358,7 +359,7 @@
     }
     var arp = [72, 76, 79, 84, 88, 91, 96], t = when + arp.length * 0.065 + 0.05;
     for (i = 0; i < arp.length; i++) tine(c, out, when + i * 0.065, mtof(arp[i]), 0.75 + 0.04 * i, w);
-    w = { verb: o.verb, wet: 0.35, t60: 2.2 };
+    w = { verb: o.verb, wet: 0.5, t60: 2.2 };
     [84, 88, 91, 96].forEach(function (m) { tine(c, out, t, mtof(m), 0.6, w); });
     sparkle(c, out, t + 0.1, { verb: o.verb, level: 0.7 });
   }
@@ -385,7 +386,7 @@
 
   // Candle puff: breathy band-limited noise that swells for 50 ms and sighs away.
   function blow(c, out, when, o) {
-    var v = voice(c, out, 0.7, vo(o, 0, 0.1)), s = noise(v), g = c.createGain();
+    var v = voice(c, out, 0.55, vo(o, 0, 0.1)), s = noise(v), g = c.createGain();
     var hp = filter(c, 'highpass', 350, 0.5), bp = filter(c, 'bandpass', 1600, 0.6);
     bp.frequency.setValueAtTime(1600, when);
     bp.frequency.exponentialRampToValueAtTime(700, when + 0.45);
@@ -398,7 +399,7 @@
 
   // Comedic "wee-woo" alarm (1.2 s): square + triangle swooping between two pitches.
   function siren(c, out, when, o) {
-    var v = voice(c, out, 0.16, vo(o, 0, 0.05)), end = when + 1.2;
+    var v = voice(c, out, 0.115, vo(o, 0, 0.05)), end = when + 1.2;
     var lp = v.own(filter(c, 'lowpass', 2600, 0.7)), env = v.own(c.createGain());
     env.gain.setValueAtTime(0, when);
     env.gain.linearRampToValueAtTime(1, when + 0.02);
@@ -426,10 +427,10 @@
     var lvl = num(o.level, 1), t = when;
     for (var i = 0; i < n; i++) {
       tine(c, out, t, mtof(notes[i]), lvl * (0.45 + 0.35 * i / n),
-        { lite: true, t60: 0.9, click: 0, pan: -0.6 + 1.2 * i / (n - 1), verb: o.verb, wet: 0.5 });
+        { lite: true, t60: 0.9, click: 0, pan: -0.6 + 1.2 * i / (n - 1), verb: o.verb, wet: 0.8 });
       t += 0.075 * (1 - 0.4 * i / n);
     }
-    var v = voice(c, out, 0.3 * lvl, vo(o, 0, 0.5)), s = noise(v), g = c.createGain();
+    var v = voice(c, out, 0.3 * lvl, vo(o, 0, 0.8)), s = noise(v), g = c.createGain();
     var bp = filter(c, 'bandpass', 2500, 1.2);
     bp.frequency.setValueAtTime(2500, when);
     bp.frequency.exponentialRampToValueAtTime(9000, when + 0.9);
@@ -506,7 +507,8 @@
 
   function songBus(c, g) {
     var bus = c.createGain(), send = c.createGain();
-    send.gain.value = 0.32;                         // reverb send: about 25 % wet
+    bus.gain.value = 1.25;
+    send.gain.value = 0.75;             // reverb send: wet about a third of dry, i.e. a 25 % wet mix
     bus.connect(g.music);
     wire([bus, send, g.verb]);
     return { bus: bus, send: send };
@@ -793,20 +795,22 @@
     };
   }
 
-  // QA hook: render a sound ('song' or an SFX name) through a copy of the full chain into an
-  // OfflineAudioContext. Resolves with the AudioBuffer (44.1 kHz stereo).
-  function render(name, arg) {
+  // QA hook: render through a copy of the full chain into an OfflineAudioContext (44.1 kHz
+  // stereo). `what` is 'song', an SFX name (with `arg`), or a list of [name, arg, atSeconds].
+  function render(what, arg) {
     return new Promise(function (resolve, reject) {
-      var isSong = name === 'song';
-      if (!OAC || !(isSong || SFX[name])) throw new Error('Cannot render ' + name);
-      var rate = 44100, secs = isSong ? SONG_LEAD + plan().end + 1.5 : 3.5;
+      var list = typeof what === 'string' ? [[what, arg, 0]] : what, secs = 3.5, rate = 44100;
+      list.forEach(function (j) {
+        if (!OAC || !(j[0] === 'song' || SFX[j[0]])) throw new Error('Cannot render ' + j[0]);
+        secs = Math.max(secs, (j[2] || 0) + (j[0] === 'song' ? SONG_LEAD + plan().end + 1.5 : 3.5));
+      });
       var off = new OAC(2, Math.ceil(secs * rate), rate), g = buildGraph(off, MASTER);
-      if (isSong) {
+      list.forEach(function (j) {
+        var at = j[2] || 0;
+        if (j[0] !== 'song') return SFX[j[0]][0](off, g.sfx, at + 0.05, sfxOpts(j[0], j[1], g.verb));
         var bus = songBus(off, g).bus;
-        plan().ev.forEach(function (e) { strike(off, bus, SONG_LEAD, e, null); });
-      } else {
-        SFX[name][0](off, g.sfx, 0.05, sfxOpts(name, arg, g.verb));
-      }
+        plan().ev.forEach(function (e) { strike(off, bus, at + SONG_LEAD, e, null); });
+      });
       var p = off.startRendering();
       if (p && p.then) p.then(resolve, reject);
       else off.oncomplete = function (e) { resolve(e.renderedBuffer); };

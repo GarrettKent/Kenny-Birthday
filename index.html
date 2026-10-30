@@ -39,6 +39,12 @@
   <script src="js/main.js" defer></script>
 </head>
 <body>
+  <!-- Team icons: original art in Titans and Vols colours (Tennessee tri-star, bold orange T) -->
+  <svg class="icon-sprite" aria-hidden="true" focusable="false">
+    <symbol id="i-titans" viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="#C8102E"/><circle cx="50" cy="50" r="43" fill="#fff"/><circle cx="50" cy="50" r="38" fill="#0C2340"/><circle cx="50" cy="50" r="34" fill="none" stroke="#4B92DB" stroke-width="3"/><g fill="#fff"><polygon points="50.0,19.5 53.1,27.8 61.9,28.1 54.9,33.6 57.3,42.1 50.0,37.2 42.7,42.1 45.1,33.6 38.1,28.1 46.9,27.8"/><polygon points="28.9,48.6 35.1,54.9 43.3,51.6 39.2,59.5 44.8,66.2 36.1,64.7 31.4,72.2 30.1,63.5 21.6,61.3 29.5,57.4"/><polygon points="71.1,48.6 70.5,57.4 78.4,61.3 69.9,63.5 68.6,72.2 63.9,64.7 55.2,66.2 60.8,59.5 56.7,51.6 64.9,54.9"/></g></symbol>
+    <symbol id="i-vols" viewBox="0 0 100 100"><path d="M10 12H90Q95 12 93 17L87 33Q86 37 81 37H62V83Q62 90 55 90H45Q38 90 38 83V37H19Q14 37 13 33L7 17Q5 12 10 12Z" fill="none" stroke="#4B4C4E" stroke-width="13" stroke-linejoin="round"/><path d="M10 12H90Q95 12 93 17L87 33Q86 37 81 37H62V83Q62 90 55 90H45Q38 90 38 83V37H19Q14 37 13 33L7 17Q5 12 10 12Z" fill="none" stroke="#fff" stroke-width="7" stroke-linejoin="round"/><path d="M10 12H90Q95 12 93 17L87 33Q86 37 81 37H62V83Q62 90 55 90H45Q38 90 38 83V37H19Q14 37 13 33L7 17Q5 12 10 12Z" fill="#FF8200"/></symbol>
+    <symbol id="i-tristar" viewBox="0 0 100 100"><g fill="currentColor"><polygon points="50.0,10.0 54.1,21.3 66.2,21.7 56.7,29.2 60.0,40.8 50.0,34.0 40.0,40.8 43.3,29.2 33.8,21.7 45.9,21.3"/><polygon points="21.1,49.5 29.4,58.2 40.6,53.6 35.0,64.3 42.7,73.5 30.9,71.4 24.5,81.6 22.8,69.7 11.1,66.8 21.9,61.5"/><polygon points="78.9,49.5 78.1,61.5 88.9,66.8 77.2,69.7 75.5,81.6 69.1,71.4 57.3,73.5 65.0,64.3 59.4,53.6 70.6,58.2"/></g></symbol>
+  </svg>
   <!-- Night sky: fixed, behind everything -->
   <div class="sky" aria-hidden="true">
     <div class="stars stars-a"></div>
@@ -106,7 +112,7 @@
             <span>The Legend.</span>
             <span class="tagline-shirt">The New Orleans Shirt.</span>
           </p>
-          <p class="banner"><span aria-hidden="true">⚜️</span> Laissez les bons temps rouler! <span aria-hidden="true">⚜️</span></p>
+          <p class="banner"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-titans"/></svg> Laissez les bons temps rouler! <svg class="ico" aria-hidden="true" focusable="false"><use href="#i-vols"/></svg></p>
         </div>
 
         <a class="scroll-cue" href="#photos">Scroll down. There's cake. <span aria-hidden="true">↓</span></a>
@@ -201,7 +207,7 @@
             <span class="ap-label">Pause slideshow</span>
           </button>
         </div>
-        <p class="tally">Shirt sightings: <strong>4 of 4</strong>. The streak continues.</p>
+        <p class="tally">Shirt sightings: <strong>4 of 4</strong>. Bold look for a Titans fan. We have questions.</p>
       </section>
 
       <!-- CAKE -->
@@ -221,7 +227,7 @@
               <button class="candle" type="button" aria-label="Candle 5 of 5, lit. Tap to blow it out."><span class="flame-glow"></span><span class="flame"></span><span class="smoke"></span><span class="wick"></span><span class="stick"></span></button>
             </div>
             <div class="tier tier-top" aria-hidden="true"><span class="drips"></span><span class="sprinkles"></span></div>
-            <div class="tier tier-bottom" aria-hidden="true"><span class="drips"></span><span class="sugar"></span><span class="cake-fleur">⚜️</span></div>
+            <div class="tier tier-bottom" aria-hidden="true"><span class="drips"></span><span class="sugar"></span><span class="cake-fleur"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-vols"/></svg></span></div>
             <div class="plate" aria-hidden="true"></div>
           </div>
         </div>
@@ -290,11 +296,16 @@
             <span class="stat-label">Times The Shirt has been washed (we hope)</span>
           </div>
           <div class="stat-card dancer">
-            <span class="stat-emoji" aria-hidden="true">🎉</span>
+            <span class="stat-emoji" aria-hidden="true">🏈</span>
             <span class="stat-num"><span data-count="10000">10,000</span>+</span>
-            <span class="stat-label">Good times rolled (conservative estimate)</span>
+            <span class="stat-label">Times you've yelled “Titan Up!” at the TV</span>
           </div>
-          <div class="stat-card stat-wide dancer">
+          <div class="stat-card dancer">
+            <span class="stat-emoji"><svg class="stat-icon" aria-hidden="true" focusable="false"><use href="#i-vols"/></svg></span>
+            <span class="stat-num"><span data-count="9999">9,999</span></span>
+            <span class="stat-label">“Rocky Top” sing-alongs (out loud, in public)</span>
+          </div>
+          <div class="stat-card dancer">
             <span class="stat-emoji" aria-hidden="true">🤗</span>
             <span class="stat-num"><span data-count="999" data-final="∞">∞</span></span>
             <span class="stat-label">Hugs you're owed today. Collect them all.</span>
@@ -317,8 +328,8 @@
       <!-- PROCLAMATION -->
       <section class="section proc-section" id="proclamation" data-section aria-labelledby="procTitle">
         <article class="proclamation dancer" id="procCard">
-          <span class="proc-corner tl" aria-hidden="true">⚜</span><span class="proc-corner tr" aria-hidden="true">⚜</span>
-          <span class="proc-corner bl" aria-hidden="true">⚜</span><span class="proc-corner br" aria-hidden="true">⚜</span>
+          <svg class="proc-corner tl" aria-hidden="true" focusable="false"><use href="#i-titans"/></svg><svg class="proc-corner tr" aria-hidden="true" focusable="false"><use href="#i-vols"/></svg>
+          <svg class="proc-corner bl" aria-hidden="true" focusable="false"><use href="#i-vols"/></svg><svg class="proc-corner br" aria-hidden="true" focusable="false"><use href="#i-titans"/></svg>
           <p class="proc-kicker">Hear ye! Hear ye!</p>
           <h2 class="proc-title" id="procTitle">Official Proclamation</h2>
           <p class="proc-body">Let it be known throughout the land, from the French Quarter to the back porch, that on this most excellent birthday, <strong>you, Kenny Patterson</strong>, are hereby and forevermore declared:</p>
@@ -327,7 +338,7 @@
             <li><span class="proc-num" aria-hidden="true">II.</span> Keeper of the Sacred New Orleans Shirt</li>
             <li><span class="proc-num" aria-hidden="true">III.</span> Exempt from all chores for 24 hours</li>
           </ol>
-          <p class="proc-fine">Anyone caught touching the thermostat during this period will be dealt with accordingly. The Shirt may not be washed, folded, or questioned without your written consent.</p>
+          <p class="proc-fine">Anyone caught touching the thermostat during this period will be dealt with accordingly. The Shirt may not be washed, folded, or questioned without your written consent. Titan Up, and Go Vols.</p>
           <div class="proc-sign">
             <p class="signature" aria-hidden="true">The Committee</p>
             <p class="signed-by">Signed, The Committee of People Who Love Kenny</p>
@@ -338,9 +349,9 @@
             <span class="seal-disc">
               <svg class="seal-ring" viewBox="0 0 120 120" focusable="false">
                 <defs><path id="sealPath" d="M60,60 m-42,0 a42,42 0 1,1 84,0 a42,42 0 1,1 -84,0"/></defs>
-                <text><textPath href="#sealPath" startOffset="0">OFFICIAL ★ KENNY ★ APPROVED ★ 100% ★</textPath></text>
+                <text><textPath href="#sealPath" startOffset="0">TITAN UP ★ GO VOLS ★ KENNY APPROVED ★</textPath></text>
               </svg>
-              <span class="seal-fleur">⚜</span>
+              <svg class="seal-stars" aria-hidden="true" focusable="false"><use href="#i-tristar"/></svg>
             </span>
           </div>
         </article>
@@ -361,6 +372,7 @@
 
     <footer class="site-footer" data-section>
       <p class="footer-big">Laissez les bons temps rouler!</p>
+      <p class="footer-teams"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-titans"/></svg> Titan Up! Go Vols! <svg class="ico" aria-hidden="true" focusable="false"><use href="#i-vols"/></svg></p>
       <p class="footer-love">Happy birthday, Kenny. You're loved more than that shirt, and that's really saying something. <span aria-hidden="true">💜💚💛</span></p>
       <button class="btn" id="shareBtn2" type="button">Share the love <span aria-hidden="true">💜</span></button>
       <p class="footer-small">Lovingly assembled by The Committee of People Who Love Kenny. No shirts were washed in the making of this page.</p>

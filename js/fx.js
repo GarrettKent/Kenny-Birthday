@@ -25,16 +25,19 @@
 
   const P = {
     purple: '#8B3DFF', plum: '#6A1B9A', green: '#19C37D', jade: '#0BA360', gold: '#FFD23F',
-    amber: '#F5B700', pink: '#FF2FB3', cyan: '#22E5FF', cream: '#FFF6E0', red: '#FF3B5C'
+    amber: '#F5B700', pink: '#FF2FB3', cyan: '#22E5FF', cream: '#FFF6E0', red: '#FF3B5C',
+    orange: '#FF8200', tblue: '#4B92DB', navy: '#0C2340', tred: '#C8102E' // Vols orange + Titans blues/red
   };
   // Palettes below hold palette names; C[name] is the registered colour id.
-  const CONFETTI = ['purple', 'purple', 'plum', 'green', 'green', 'jade', 'gold', 'gold', 'amber', 'pink', 'cyan', 'cream'];
+  const CONFETTI = ['purple', 'plum', 'green', 'jade', 'gold', 'gold', 'amber', 'pink', 'cyan', 'cream', 'orange', 'orange', 'tblue', 'tblue'];
   const SCHEMES = [['gold', 'cream'], ['purple', 'gold'], ['green', 'gold'], ['pink', 'cyan'], ['cyan', 'cream'],
     ['purple', 'green'], ['pink', 'gold'], ['green', 'purple'], ['cyan', 'pink'], ['gold', 'purple']];
   const LETTERS = ['gold', 'pink', 'cyan', 'green', 'purple'];
   const GLINTS = ['gold', 'cream', 'cyan'];
   const HEARTS = ['pink', 'red', 'purple'];
-  const RAIN = ['⚜️', '🎉', '💜', '💚', '💛'];
+  // Team icons ('titans', 'vols', 'check') are vector sprites drawn below; the rest are emoji.
+  const TEAM = ['titans', 'vols', '🏈'];
+  const RAIN = ['titans', 'vols', '🏈', 'check', '🎉'];
   const HEART_EMOJI = { '💜': 'purple', '💚': 'green', '💛': 'gold', '❤': 'red', '♥': 'red', '💖': 'pink',
     '💗': 'pink', '💕': 'pink', '💓': 'pink', '🩷': 'pink', '💙': 'cyan', '🧡': 'amber', '🤍': 'cream' };
   const EMOJI_FONT = '"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji","Twemoji Mozilla","Segoe UI Symbol",sans-serif';
@@ -251,6 +254,65 @@
     x.restore();
   }
 
+  // Team icons, drawn in a 100x100 box. Original art in team colours, not the official logos:
+  // Titans = the Tennessee tri-star (a state symbol) in navy/blue/red, Vols = a bold orange T,
+  // check = the orange-and-white end-zone checkerboard.
+  function starPath(x, cx, cy, ro, ri, rot) {
+    x.beginPath();
+    for (let i = 0; i < 10; i++) {
+      const r = i & 1 ? ri : ro, a = rot + (i * Math.PI) / 5;
+      x.lineTo(cx + Math.sin(a) * r, cy - Math.cos(a) * r);
+    }
+    x.closePath();
+  }
+
+  function drawTitans(x, s) {
+    x.save();
+    x.scale(s / 100, s / 100);
+    [[48, P.tred], [43, '#FFFFFF'], [38, P.navy]].forEach(([r, c]) => {
+      x.fillStyle = c;
+      x.beginPath();
+      x.arc(50, 50, r, 0, TAU);
+      x.fill();
+    });
+    Object.assign(x, { lineWidth: 3, strokeStyle: P.tblue });
+    x.beginPath();
+    x.arc(50, 50, 34, 0, TAU);
+    x.stroke();
+    x.fillStyle = '#FFFFFF';
+    [[50, 32, 0], [34, 60, -0.42], [66, 60, 0.42]].forEach(([cx, cy, rot]) => { starPath(x, cx, cy, 12.5, 5.2, rot); x.fill(); });
+    x.restore();
+  }
+
+  const VOLS_T = 'M10 12H90Q95 12 93 17L87 33Q86 37 81 37H62V83Q62 90 55 90H45Q38 90 38 83V37H19Q14 37 13 33L7 17Q5 12 10 12Z';
+  function drawVols(x, s) {
+    x.save();
+    x.scale(s / 100, s / 100);
+    const t = new Path2D(VOLS_T);
+    x.lineJoin = 'round';
+    Object.assign(x, { lineWidth: 13, strokeStyle: '#4B4C4E' });
+    x.stroke(t);
+    Object.assign(x, { lineWidth: 7, strokeStyle: '#FFFFFF' });
+    x.stroke(t);
+    x.fillStyle = P.orange;
+    x.fill(t);
+    x.restore();
+  }
+
+  function drawCheck(x, s) {
+    x.save();
+    x.scale(s / 100, s / 100);
+    x.fillStyle = '#FFFFFF';
+    x.fillRect(14, 14, 72, 72);
+    x.fillStyle = P.orange;
+    for (let r = 0; r < 4; r++) for (let c = 0; c < 4; c++) if (!((r + c) & 1)) x.fillRect(14 + c * 18, 14 + r * 18, 18, 18);
+    Object.assign(x, { lineWidth: 2.5, strokeStyle: 'rgba(80,40,0,0.45)' });
+    x.strokeRect(14, 14, 72, 72);
+    x.restore();
+  }
+
+  const ICONS = { titans: drawTitans, vols: drawVols, check: drawCheck };
+
   function heartSprite(ci) {
     const c = colors[ci];
     return c.heart || (c.heart = makeSprite(64, 64, (x) => drawHeart(x, c, 64)));
@@ -260,6 +322,7 @@
   // falls back to vector art: gold fleur-de-lis for the fleur, a vector heart for hearts, else a star.
   function glyphSprite(ch) {
     if (glyphs[ch]) return glyphs[ch];
+    if (ICONS[ch]) return (glyphs[ch] = makeSprite(40, 40, (o) => ICONS[ch](o, 40)));
     const S = 96, x = scratch(S, S);
     // (gold fill: a monochrome fallback glyph still reads on a dark sky)
     Object.assign(x, { font: '72px ' + EMOJI_FONT, textAlign: 'center', textBaseline: 'middle', fillStyle: P.gold });
@@ -460,7 +523,7 @@
   function emojiBurst(x, y, o) {
     o = o || {};
     x = num(x, W / 2); y = num(y, H / 2);
-    const chars = charList(o.chars, ['⚜️']), n = scaleCount(num(o.count, 14)), pw = clamp(num(o.power, 1), 0.1, 4);
+    const chars = charList(o.chars, TEAM), n = scaleCount(num(o.count, 14)), pw = clamp(num(o.power, 1), 0.1, 4);
     for (let i = 0; i < n; i++) {
       const a = rand(0, TAU), sp = rand(260, 600) * pw * (reduced ? 0.5 : 1);
       spritePiece(x, y, Math.cos(a) * sp, Math.sin(a) * sp - (reduced ? 0 : 140 * pw), glyphSprite(pick(chars)), rand(24, 36), MID);
@@ -527,7 +590,7 @@
       const p = confetti(rand(-10, W + 10), -14, rand(-15, 15), 60, C[pick(CONFETTI)], 0, LOW);
       if (p) p.life = (H + 40) / 65 + 1.5;
     }
-    for (ambEmoAcc += dt * (lvl > 1 ? 1.6 : 0.22) * quality; ambEmoAcc >= 1; ambEmoAcc--) dropEmoji(lvl > 1 ? pick(RAIN) : '⚜️');
+    for (ambEmoAcc += dt * (lvl > 1 ? 1.6 : 0.22) * quality; ambEmoAcc >= 1; ambEmoAcc--) dropEmoji(lvl > 1 ? pick(RAIN) : pick(TEAM));
   }
 
   /* ------------------------------------------------------------ fireworks */

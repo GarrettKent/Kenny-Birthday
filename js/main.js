@@ -508,7 +508,7 @@
       if (dx * dx + dy * dy > 196 || performance.now() - d.t > 650) return;
       const t = e.target;
       if (t && t.closest && t.closest('button, a, input, label, .photo, .balloon, [data-no-burst]')) return;
-      fx('burst', e.clientX, e.clientY, { count: coarse ? 26 : 34, emoji: Math.random() < 0.35 ? ['⚜️'] : false });
+      fx('burst', e.clientX, e.clientY, { count: coarse ? 26 : 34, emoji: Math.random() < 0.35 ? ['titans', 'vols', '🏈'] : false });
     }, { passive: true });
 
     let lastSparkle = 0;
@@ -552,7 +552,7 @@
         const c = centerOf(giftBtn);
         fx('burst', c.x, c.y, { count: 150, power: 1.7, angle: -90, spread: 130 });
         fx('cannons', { count: 80, power: 1.15 });
-        fx('emoji', c.x, c.y, { chars: ['⚜️'], count: 16, power: 1.2 });
+        fx('emoji', c.x, c.y, { chars: ['titans', 'vols', '🏈'], count: 18, power: 1.2 });
         if (!quiet) sfx('tada');
         setTimeout(() => fx('firework', vw() * 0.26, vh() * 0.2, { pattern: 'peony' }), 380);
         setTimeout(() => fx('firework', vw() * 0.74, vh() * 0.16, { pattern: 'heart' }), 760);
@@ -922,6 +922,7 @@
     { t: 'OLD ENOUGH', q: 'Old enough to know better. Young enough to do it anyway.' },
     { t: 'ERROR 404', q: 'Age not found. Have you tried turning it off and on again?' },
     { t: 'STILL COOL', q: 'Scientifically verified. See the stats below.' },
+    { t: 'MIRACLE', q: 'Old enough to remember the Music City Miracle. (It was a lateral. Fight us.)' },
     { t: 'NUNYA', q: 'As in: nunya business.' },
   ];
   const SCIENTISTS = ['baffled', 'sweating', 'in denial', 'asking for a raise', 'out to lunch', 'rechecking the math', 'on strike'];
@@ -1015,11 +1016,11 @@
       if (res.jackpot) {
         sfx('ding', true);
         fx('cannons', { count: 60, emoji: true });
-        fx('emoji', c.x, c.y, { chars: ['⚜️', '👑', '🎉'], count: 22, power: 1.3 });
+        fx('emoji', c.x, c.y, { chars: ['titans', 'vols', '👑', '🏈'], count: 22, power: 1.3 });
         fx('firework', c.x, Math.max(90, c.r.top - 80), { pattern: 'ring' });
       } else {
         sfx('ding', false);
-        fx('burst', c.x, c.y, { count: 44, power: 1.1, emoji: ['⚜️'] });
+        fx('burst', c.x, c.y, { count: 44, power: 1.1, emoji: ['titans', 'vols'] });
       }
     }
 
@@ -1126,7 +1127,7 @@
     'You pressed it. Of course you did.',
     'Again?! The Committee is not even surprised.',
     "Okay, at this point it's a lifestyle.",
-    'Supreme Ruler of the Thermostat AND the Button.',
+    'Supreme Ruler of the Thermostat AND the Button. Titan Up!',
   ];
 
   function setupDanger() {
@@ -1166,7 +1167,7 @@
       stopShow = fx('fireworksShow', { duration: dur, intensity: reduced ? 0.4 : 1.5, finale: true });
       fx('setAmbient', reduced ? 0 : 2);
       fx('cannons', { count: 90, power: 1.2, emoji: true });
-      fx('rain', { chars: ['⚜️', '🎉', '💜', '💚', '💛', '🎈'], duration: Math.min(dur, 8000), rate: 7 });
+      fx('rain', { chars: ['titans', 'vols', '🏈', 'check', '🎉', '🎈'], duration: Math.min(dur, 8000), rate: 7 });
       partyStarts.push(setTimeout(() => fx('textFirework', 'KENNY', vw() / 2, vh() * 0.3), reduced ? 0 : 2400));
       if (!reduced) for (let i = 0; i < 4; i++) partyStarts.push(setTimeout(() => spawnBalloon({ extra: true }), 300 + i * 450));
       if (label) label.innerHTML = 'Party<br>mode';
